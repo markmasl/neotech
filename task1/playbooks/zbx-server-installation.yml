@@ -1,0 +1,102 @@
+---
+- name: Grant super user privileges before installing packages
+  hosts: "zbx-test-server" 
+  become: yes
+  tasks: 
+   - name: Install Apache2 packages
+     apt: 
+       update_cache: yes
+       cache_valid_time: 60
+       pkg: apache2
+   
+   - name: Install PHP7 packages
+     apt:
+       update_cache: yes
+       cache_valid_time: 60
+       pkg: "{{item}}"
+     with_items:
+       - php7.0
+       - libapache2-mod-php7.0
+       - php7.0-mysql
+
+   - name: Install MySQL and MySQL-python dependent packages
+     apt: 
+       pkg="{{item}}"
+     with_items:
+       - mysql-server-core-5.7
+       - mysql-client-core-5.7
+       - libmysqlclient-dev
+       - python-mysqldb
+       - mysql-server
+       - mysql-client
+       - python3-pip
+
+   - name: Install mysqlclient python package.
+     pip:
+       name: mysqlclient
+   
+   - name: Download Zabbix deb
+     get_url:
+       url: http://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+xenial_all.deb
+       dest: /tmp/
+   
+   - name: Install Zabbix deb package
+     apt: 
+       deb: /tmp/zabbix-release_3.4-1+xenial_all.deb
+   
+   - name: Install zabbix-server-mysql and zabbix-frontend-php
+     apt:
+       update_cache: yes
+       cache_valid_time: 60
+       pkg: "{{item}}"
+     with_items:
+       - zabbix-server-mysql
+       - zabbix-frontend-php
+
+   - name: "MySQL | Create database"
+     mysql_db:
+       name: zabbix
+       encoding: utf8
+       collation: utf8_bin
+       state: import
+       target: "/usr/share/doc/zabbix-server-mysql/create.sql.gz"
+     when: zabbix_db_installation
+
+   - name: "MySQL | Grant privileges for new zabbix user"
+     mysql_user:
+       user: "{{zabbix_user}}"
+       password: "{{zabbix_pwd}}"
+       priv: zabbix.*:ALL,GRANT  
+
+   - name: Generate Zabbix Server configuration template
+     template:
+       src: templates/zabbix_server.conf.j2
+       dest: /etc/zabbix/zabbix_server.conf
+
+   - name: Generate Zabbix configuration template
+     template:
+       src: templates/zabbix.conf.j2
+       dest: /etc/apache2/conf-enabled/zabbix.conf
+
+   - name: Reload service zabbix-server
+     service:
+       name: zabbix-server
+       state: restarted
+
+   - name: Reload service zabbix-server
+     service:
+       name: apache2
+       state: restarted
+
+   - name: Generate Zabbix configuration template
+     template:
+       src: templates/zabbix.conf.php.j2
+       dest: /usr/share/zabbix/conf/zabbix.conf.php
+
+   - name: Remove useless packages from the cache
+     apt:
+       autoclean: yes
+   
+   - name: Remove dependencies that are no longer required
+     apt:
+       autoremove: yes 
