@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-back-deployment
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: servicea
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: servicea
+        tier: backend
+    spec:
+      containers:
+      - name: nginx-back
+        image: nginx
+        ports:
+        - name: servicea
+          containerPort: 8081
+        volumeMounts:
+        - name: nginx-back
+          mountPath: /etc/nginx/conf.d
+        - name: nginx-www-servicea
+          mountPath: /usr/share/nginx/html/servicea
+      volumes:
+      - name: nginx-back
+        configMap:
+          name: nginx-back
+          items:
+          - key: config
+            path: default.conf
+      - name: nginx-www-servicea
+        configMap:
+            name: nginx-www-servicea
+            items:
+            - key: htmla
+              path: serviceA.html

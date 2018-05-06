@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello
+spec:
+  selector:
+    app: web
+    tier: backend
+  ports:
+  - name: servicea
+    protocol: TCP
+    port: 8081
+    targetPort: http
+  - name: serviceb
+    protocol: TCP
+    port: 8082
+    targetPort: http
