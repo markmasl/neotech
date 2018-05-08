@@ -6,7 +6,8 @@ vagrant: Installed Version: 2.0.4
 
 Guest: Ubuntu 16.04.4 LTS
 Packages:
-- docker:
+Docker:
+
 Client:
  Version:      18.03.1-ce
  API version:  1.37
@@ -29,20 +30,20 @@ Server:
 
 How to install: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1
 
-- kubernetes: 
+kubernetes: 
 
 Client Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.2", GitCommit:"81753b10df112992bf51bbc2c2f85208aad78335", GitTreeState:"clean", BuildDate:"2018-04-27T09:22:21Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
 Server Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.0", GitCommit:"fc32d2f3698e36b93322a3465f63a14e9f0eaead", GitTreeState:"clean", BuildDate:"2018-03-26T16:44:10Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
 
 How to install: https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-native-package-management
 
-- minikube version: v0.26.1
+minikube version: v0.26.1
 
 How to install: https://github.com/kubernetes/minikube/releases
 
 #minikube start --vm-driver=none
 
-- helm 
+helm 
 
 Client: &version.Version{SemVer:"v2.9.0", GitCommit:"f6025bb9ee7daf9fee0026541c90a6f557a3e0bc", GitTreeState:"clean"}
 Server: &version.Version{SemVer:"v2.9.0", GitCommit:"f6025bb9ee7daf9fee0026541c90a6f557a3e0bc", GitTreeState:"clean"}
@@ -57,6 +58,9 @@ kubectl -n kube-system patch deployment tiller-deploy -p '{"spec": {"template": 
 
 Run deployment:
 To install nginx-backend - 
+
 helm install -n nginx-back development/nginx-back
+
 To install nginx-frontend - 
+
 helm install -n nginx-front development/nginx-front
