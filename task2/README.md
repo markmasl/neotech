@@ -1,7 +1,7 @@
 Nginx-proxy and nginx-backend server deployment in kubernetes and helm.
 
 Host: Linux Mint 18
-Virtualbox: 5.2.10
+Virtualbox: Version 5.1.36 r122089 (Qt5.6.1)
 vagrant: Installed Version: 2.0.4
 
 Guest: Ubuntu 16.04.4 LTS
