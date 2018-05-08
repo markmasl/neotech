@@ -5,7 +5,9 @@ Virtualbox: 5.2.10
 vagrant: Installed Version: 2.0.4
 
 Guest: Ubuntu 16.04.4 LTS
+
 Packages:
+
 Docker:
 
 Client:
@@ -37,7 +39,9 @@ Server Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.0", GitCom
 
 How to install: https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-native-package-management
 
-minikube version: v0.26.1
+minikube
+
+version: v0.26.1
 
 How to install: https://github.com/kubernetes/minikube/releases
 
@@ -64,3 +68,12 @@ helm install -n nginx-back development/nginx-back
 To install nginx-frontend - 
 
 helm install -n nginx-front development/nginx-front
+
+In order to verify that both services (servicea and serviceb) are running please curl from kubernetes host to port 31477:
+
+But before that modify /etc/hosts file:
+"minikube ip" serviceb	servicea
+change "minikube ip" with real minikube ip address
+
+curl servicea:31477
+curl serviceb:31477
