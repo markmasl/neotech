@@ -72,7 +72,9 @@ helm install -n nginx-front development/nginx-front
 In order to verify that both services (servicea and serviceb) are running please curl from kubernetes host to port 31477:
 
 But before that modify /etc/hosts file:
+
 "minikube ip" serviceb	servicea
+
 change "minikube ip" with real minikube ip address
 
 curl servicea:31477
