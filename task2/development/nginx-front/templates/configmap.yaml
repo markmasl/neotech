@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-front
+data:
+  config: |
+      upstream servicea {
+        server servicea:8081;
+      }
+      upstream serviceb {
+        server serviceb:8082;
+      }
+      server {
+       listen       80;
+       server_name  servicea;
+
+       location / {
+            proxy_pass http://servicea;
+            }
+       error_page   500 502 503 504  /50x.html;
+       location = /50x.html {
+           root   /usr/share/nginx/html;
+           }
+      }
+      server {
+       listen      80;
+       server_name serviceb;
+
+       location / {
+            proxy_pass http://serviceb;
+            }
+       error_page   500 502 503 504  /50x.html;
+       location = /50x.html {
+           root   /usr/share/nginx/html;
+           }
+      }
