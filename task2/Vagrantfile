@@ -18,22 +18,20 @@ Vagrant.configure("2") do |config|
   config.vm.define "kubernetes" do |kubernetes|
     kubernetes.vm.box = "ubuntu/xenial64"
     kubernetes.vm.hostname = "kubernetes"
-    kubernetes.vm.network "private_network", ip: "192.168.50.3"
-    kubernetes.vm.network "forwarded_port", guest: 31477, host: 8080 , host_ip: "127.0.0.1"
   end
   
-  config.vm.define "front" do |front|
-    front.vm.box = "ubuntu/xenial64"
-    front.vm.hostname = "front"
-    front.vm.network "private_network", ip: "192.168.50.4"
+  #config.vm.define "front" do |front|
+  #  front.vm.box = "ubuntu/xenial64"
+  #  front.vm.hostname = "front"
+  #  front.vm.network "private_network", ip: "192.168.50.4"
   # front.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-  end
+  #end
 
-  config.vm.define "back" do |back|
-    back.vm.box = "ubuntu/xenial64"
-    back.vm.hostname = "back"
-    back.vm.network "private_network", ip: "192.168.50.5"
-  end
+  #config.vm.define "back" do |back|
+  #  back.vm.box = "ubuntu/xenial64"
+  #  back.vm.hostname = "back"
+  #  back.vm.network "private_network", ip: "192.168.50.5"
+  #end
 
   #Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
